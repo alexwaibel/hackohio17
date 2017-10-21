@@ -32,7 +32,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -46,6 +46,22 @@
        <attribute name="title">
         <string>Movies</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QListWidget" name="listWidget">
+          <property name="styleSheet">
+           <string notr="true">QListWidget::item {border-bottom: 1px solid black }
+QListWidget::item:selected {color: black }</string>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="viewMode">
+           <enum>QListView::ListMode</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="bookTab">
        <attribute name="title">
@@ -74,22 +90,13 @@
     </property>
     <addaction name="actionQuit"/>
    </widget>
-   <widget class="QMenu" name="menuLog_In">
-    <property name="layoutDirection">
-     <enum>Qt::RightToLeft</enum>
-    </property>
-    <property name="title">
-     <string>Log In</string>
-    </property>
-   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuLog_In"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionQuit">
    <property name="icon">
     <iconset>
-     <normaloff>exit-512.png</normaloff>exit-512.png</iconset>
+     <normaloff>../../../PycharmProjects/HackOhio17/exit-512.png</normaloff>../../../PycharmProjects/HackOhio17/exit-512.png</iconset>
    </property>
    <property name="text">
     <string>Quit</string>

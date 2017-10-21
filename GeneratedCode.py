@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\Owner\PycharmProjects\HackOhio17\HackOhio17UI.ui'
+# Form implementation generated from reading ui file 'C:\Users\Owner\Documents\Github\HackOhio17\HackOhio17UI.ui'
 #
 # Created by: PyQt5 UI code generator 5.9
 #
@@ -30,6 +30,15 @@ class Ui_mainWindow(object):
         self.tabWidget.addTab(self.musicTab, "")
         self.movieTab = QtWidgets.QWidget()
         self.movieTab.setObjectName("movieTab")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.movieTab)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.listWidget = QtWidgets.QListWidget(self.movieTab)
+        self.listWidget.setStyleSheet("QListWidget::item {border-bottom: 1px solid black }\n"
+"QListWidget::item:selected {color: black }")
+        self.listWidget.setAlternatingRowColors(True)
+        self.listWidget.setViewMode(QtWidgets.QListView.ListMode)
+        self.listWidget.setObjectName("listWidget")
+        self.verticalLayout_2.addWidget(self.listWidget)
         self.tabWidget.addTab(self.movieTab, "")
         self.bookTab = QtWidgets.QWidget()
         self.bookTab.setObjectName("bookTab")
@@ -42,24 +51,20 @@ class Ui_mainWindow(object):
         self.menuBar.setObjectName("menuBar")
         self.menuFile = QtWidgets.QMenu(self.menuBar)
         self.menuFile.setObjectName("menuFile")
-        self.menuLog_In = QtWidgets.QMenu(self.menuBar)
-        self.menuLog_In.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.menuLog_In.setObjectName("menuLog_In")
         mainWindow.setMenuBar(self.menuBar)
         self.statusBar = QtWidgets.QStatusBar(mainWindow)
         self.statusBar.setObjectName("statusBar")
         mainWindow.setStatusBar(self.statusBar)
         self.actionQuit = QtWidgets.QAction(mainWindow)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("exit-512.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../../../PycharmProjects/HackOhio17/exit-512.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionQuit.setIcon(icon)
         self.actionQuit.setObjectName("actionQuit")
         self.menuFile.addAction(self.actionQuit)
         self.menuBar.addAction(self.menuFile.menuAction())
-        self.menuBar.addAction(self.menuLog_In.menuAction())
 
         self.retranslateUi(mainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.actionQuit.triggered.connect(mainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
 
@@ -70,7 +75,6 @@ class Ui_mainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.movieTab), _translate("mainWindow", "Movies"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.bookTab), _translate("mainWindow", "Books"))
         self.menuFile.setTitle(_translate("mainWindow", "File"))
-        self.menuLog_In.setTitle(_translate("mainWindow", "Log In"))
         self.actionQuit.setText(_translate("mainWindow", "Quit"))
 
 

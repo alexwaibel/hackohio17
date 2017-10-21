@@ -18,6 +18,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         super(ApplicationWindow, self).__init__()
         self.ui = GeneratedCode.Ui_mainWindow()
         self.ui.setupUi(self)
+        for x in range(1, 100):
+            self.label = QtWidgets.QListWidgetItem()
+            self.label.setText(str(x) + ".")
+            self.ui.listWidget.addItem(self.label)
 
 
 if __name__ == "__main__":
