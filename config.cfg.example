@@ -1,0 +1,8 @@
+[Twitter]
+# Set whether or not the program should use tweets for analysis
+enabled = yes
+# Get these next items from https://apps.twitter.com
+consumer key =
+consumer secret =
+access token =
+access token secret =
