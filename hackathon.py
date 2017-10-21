@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import configparser
-
+import re
 import twitter
 from watson_developer_cloud import PersonalityInsightsV3
 
@@ -36,6 +36,16 @@ def fetchTweets(api):
 
     return statusText
 
+
+def get_traits_dic(prof):
+    trait_dic = dict()
+    for personalities in prof['personality']:
+        trait_dic[personalities['name']] = personalities['raw_score']
+        for child in personalities['children']:
+            trait_dic[child['name']] = child['raw_score']
+    return trait_dic
+
+
 def main():
     twitterEnabled = config['Twitter'].getboolean('enabled')
 
@@ -60,9 +70,12 @@ def main():
                                             content_language=None,
                                             accept='application/json',
                                             accept_language=None,
-                                            raw_scores=False,
+                                            raw_scores=True,
                                             consumption_preferences=True,
                                             csv_headers=False)
+    trait_dictionary = get_traits_dic(userProf)
+
+
 
 if __name__ == "__main__":
     main()
