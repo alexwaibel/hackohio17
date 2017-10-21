@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 import configparser
-import twitter
-import watson_developer_cloud
+
+import twitter as twitter
 from watson_developer_cloud import PersonalityInsightsV3
 
 config = configparser.ConfigParser()
@@ -21,6 +21,7 @@ def authenticateTwitter(config):
                              access_token_key=accessToken,
                              access_token_secret=accessTokenSecret)
     return twitterApi
+
 
 def fetchTweets(api):
     statusText = ""
