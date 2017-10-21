@@ -54,6 +54,7 @@ def main():
         username='136e3f1c-5154-41bb-8a3a-dda7edb1e118',
         password='TZlDSGcxPVVf')
 
+    #Gets personality breakdown from watson as a JSON(?)
     userProf = personality_insights.profile(tweetText,
                                             content_type='text/plain',
                                             content_language=None,
