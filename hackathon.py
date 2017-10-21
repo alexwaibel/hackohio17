@@ -143,7 +143,37 @@ def main():
     print(agr)
     print(neu)
 
-    # action_score = ((1-ope)+ext+consum_dictionary["action"])
+
+    git action_score = ((1-ope)+ext+consum_dictionary["action"]) / 3
+    adventure_score = (con+agr+consum_dictionary["adventure"]) / 3
+    animation_score = ((1-con)+(1-ext)+(1-agr)+neu) / 4
+    comedy_score = ((1-ope)+ext+agr) / 3
+    crime_score = (ope+(1-ext)+(1-agr)) / 3
+    documentary_score = (ope+consum_dictionary["documentary"]) / 2
+    drama_score = (ext+agr+consum_dictionary["drama"]) / 3
+    science_fiction_score = (con+(1-ext)+consum_dictionary["science_fiction"])/3
+    fantasy_score = science_fiction_score
+    war_score = ((1-ope)+(1-neu)+consum_dictionary["war"])/3
+    history_score = ((1-ope)+(1-neu) + consum_dictionary["historical"]) / 3
+    romance_score = ((1-ope)+ext+agr+consum_dictionary["romance"])/4
+    music_score = (neu+consum_dictionary["musical"])/2
+    mystery_score = crime_score
+    thriller_score = (action_score + drama_score) / 2
+    horror_score = ((1-ext) + (1-agr) + neu + consum_dictionary["horror"]) / 4
+
+    scores = sorted([("action", action_score), ("adventure", adventure_score), ("animation", animation_score),
+                     ("comedy", comedy_score), ("crime", crime_score), ("documentary", documentary_score),
+                     ("drama", drama_score), ("science-fiction", science_fiction_score), ("fantasy", fantasy_score),
+                     ("war", war_score), ("history", history_score), ("romance", romance_score), ("music", music_score),
+                     ("mystery", mystery_score), ("thriller", thriller_score), ("horror", horror_score)],
+                    key=lambda x: x[1], reverse=True)
+    print(scores)
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
