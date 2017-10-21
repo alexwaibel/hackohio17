@@ -7,4 +7,5 @@ Project written at Hack OH/IO 2017
 * watson_developer_cloud
 
 ## Supported Social Media
+* Reddit
 * Twitter
