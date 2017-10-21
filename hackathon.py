@@ -53,7 +53,7 @@ def get_consumption_traits(prof):
     consum_traits = dict()
     movie_preferences = prof['consumption_preferences'][4]['consumption_preferences']
     for category in movie_preferences:
-        consum_traits[category['name']] = category['score']
+        consum_traits[category['consumption_preference_id'][30:]] = category['score']
     return consum_traits
 
 
