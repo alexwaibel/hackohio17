@@ -44,8 +44,6 @@ def get_traits_dic(prof):
     trait_dic = dict()
     for personalities in prof['personality']:
         trait_dic[personalities['name']] = personalities['raw_score']
-        for child in personalities['children']:
-            trait_dic[child['name']] = child['raw_score']
     return trait_dic
 
 
@@ -120,8 +118,24 @@ def main():
                                             consumption_preferences=True,
                                             csv_headers=False)
     trait_dictionary = get_traits_dic(userProf)
-    consum_dict = get_consumption_traits(userProf)
+    consum_dictionary = get_consumption_traits(userProf)
 
+    print(trait_dictionary)
+    print(consum_dictionary)
+
+    # Rank genres with a score of 0 to 1 inclusive
+    ope = trait_dictionary["Openness"]
+    con = trait_dictionary["Conscientiousness"]
+    ext = trait_dictionary["Extraversion"]
+    agr = trait_dictionary["Agreeableness"]
+    neu = trait_dictionary["Emotional range"]
+    print(ope)
+    print(con)
+    print(ext)
+    print(agr)
+    print(neu)
+
+    #action_score = ((1-ope)+ext+consum_dictionary["action"])
 
 
 if __name__ == "__main__":
