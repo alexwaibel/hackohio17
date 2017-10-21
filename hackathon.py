@@ -2,6 +2,7 @@
 
 import configparser
 import twitter
+import re
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
@@ -39,6 +40,11 @@ def main():
     if twitterEnabled:
         twitterApi = authenticateTwitter(config)
         tweetText = fetchTweets(twitterApi)
+        # Remove all mentions from tweets.
+        tweetText = re.sub('(@[A-Za-z0-9]+)',
+                           '', tweetText, flags=re.MULTILINE)
+        # Remove all URLs from tweets.
+        tweetText = re.sub(r'http\S+', '', tweetText, flags=re.MULTILINE)
         print(tweetText)
 
 if __name__ == "__main__":
