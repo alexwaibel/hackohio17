@@ -20,11 +20,26 @@ def authenticateTwitter(config):
                              access_token_secret=accessTokenSecret)
     return twitterApi
 
+def fetchTweets(api):
+    statusText = ""
+    statusSet = api.GetUserTimeline(exclude_replies=False, include_rts=False)
+    while len(statusSet) > 0:
+        lastStatusID = statusSet[len(statusSet) - 1].id
+        for status in statusSet:
+            statusText += ' ' + status.text
+        statusSet = api.GetUserTimeline(exclude_replies=False,
+                                        include_rts=False,
+                                        max_id=lastStatusID - 1)
+
+    return statusText
+
 def main():
     twitterEnabled = config['Twitter'].getboolean('enabled')
 
     if twitterEnabled:
         twitterApi = authenticateTwitter(config)
+        tweetText = fetchTweets(twitterApi)
+        print(tweetText)
 
 if __name__ == "__main__":
     main()
