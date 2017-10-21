@@ -2,6 +2,8 @@
 
 import configparser
 import twitter
+import watson_developer_cloud
+from watson_developer_cloud import PersonalityInsightsV3
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
@@ -40,6 +42,15 @@ def main():
         twitterApi = authenticateTwitter(config)
         tweetText = fetchTweets(twitterApi)
         print(tweetText)
+
+    personality_insights = PersonalityInsightsV3(
+        version='2017-10-13',
+        username='136e3f1c-5154-41bb-8a3a-dda7edb1e118',
+        password='TZlDSGcxPVVf')
+
+    userProf = personality_insights.profile(tweetText, content_type='text/plain', content_language=None,
+  accept='application/json', accept_language=None, raw_scores=False,
+  consumption_preferences=True, csv_headers=False)
 
 if __name__ == "__main__":
     main()
