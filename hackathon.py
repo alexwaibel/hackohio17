@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import configparser
-import PRAW
+import praw
 import re
 import twitter
 import watson_developer_cloud
@@ -10,7 +10,7 @@ from watson_developer_cloud import PersonalityInsightsV3
 config = configparser.ConfigParser()
 config.read('config.cfg')
 
-# Takes configparser as argument and connects API to account
+# Takes configparser as argument and connects Twitter API to account
 
 def authenticateTwitter(config):
     consumerKey = str(config['Twitter']['consumer key'])
@@ -24,21 +24,46 @@ def authenticateTwitter(config):
                              access_token_secret=accessTokenSecret)
     return twitterApi
 
+# Takes Twitter API as argument and fetches all tweets by user.
+
 def fetchTweets(api):
     statusText = ""
     statusSet = api.GetUserTimeline(exclude_replies=False, include_rts=False)
     while len(statusSet) > 0:
         lastStatusID = statusSet[len(statusSet) - 1].id
         for status in statusSet:
-            statusText += ' ' + status.text
+            statusText += " " + status.text
         statusSet = api.GetUserTimeline(exclude_replies=False,
                                         include_rts=False,
                                         max_id=lastStatusID - 1)
 
     return statusText
 
+def fetchRedditComments(api, config):
+    redditCommentText = ""
+    redditor = api.redditor(str(config['Reddit']['username']))
+    for comment in redditor.comments.new(limit=None):
+        redditCommentText += " " + comment.body
+
+    return redditCommentText
+
+# Takes configparser as argument and connects Reddit API to account.
+
+def authenticateReddit(config):
+    clientId = str(config['Reddit']['client id'])
+    clientSecret = str(config['Reddit']['client secret'])
+    password = str(config['Reddit']['password'])
+    username = str(config['Reddit']['username'])
+    redditApi = praw.Reddit(client_id=clientId,
+                            client_secret=clientSecret,
+                            password=password,
+                            user_agent='script by /u/alexwaibel',
+                            username=username)
+    return redditApi
+
 def main():
     twitterEnabled = config['Twitter'].getboolean('enabled')
+    redditEnabled = config['Reddit'].getboolean('enabled')
 
     if twitterEnabled:
         twitterApi = authenticateTwitter(config)
@@ -48,6 +73,14 @@ def main():
                            '', tweetText, flags=re.MULTILINE)
         # Remove all URLs from tweets.
         tweetText = re.sub(r'http\S+', '', tweetText, flags=re.MULTILINE)
+
+    if redditEnabled:
+        redditApi = authenticateReddit(config)
+        redditCommentText = fetchRedditComments(redditApi, config)
+
+        # Remove URLs from reddit comments.
+        redditCommentText = re.sub(r'http\S+', '', tweetText,
+                                   flags=re.MULTILINE)
 
     personality_insights = PersonalityInsightsV3(
         version='2017-10-13',
