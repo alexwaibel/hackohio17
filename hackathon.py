@@ -49,6 +49,14 @@ def get_traits_dic(prof):
     return trait_dic
 
 
+def get_consumption_traits(prof):
+    consum_traits = dict()
+    movie_preferences = prof['consumption_preferences'][4]['consumption_preferences']
+    for category in movie_preferences:
+        consum_traits[category['name']] = category['score']
+    return consum_traits
+
+
 '''
 Takes Reddit API and configparser as arguments and fetches all reddit comments
 made by the user.
@@ -112,6 +120,7 @@ def main():
                                             consumption_preferences=True,
                                             csv_headers=False)
     trait_dictionary = get_traits_dic(userProf)
+    consum_dict = get_consumption_traits(userProf)
 
 
 
