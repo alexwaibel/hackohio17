@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
 import configparser
-import twitter
+import PRAW
 import re
+import twitter
 import watson_developer_cloud
 from watson_developer_cloud import PersonalityInsightsV3
 
@@ -47,7 +48,6 @@ def main():
                            '', tweetText, flags=re.MULTILINE)
         # Remove all URLs from tweets.
         tweetText = re.sub(r'http\S+', '', tweetText, flags=re.MULTILINE)
-        print(tweetText)
 
     personality_insights = PersonalityInsightsV3(
         version='2017-10-13',

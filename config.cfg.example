@@ -6,3 +6,12 @@ consumer key =
 consumer secret =
 access token =
 access token secret =
+
+[Reddit]
+# Set whether or not the program shoul duse tweeets for analysis
+enabled = yes
+# Get these next items from https://www.reddit.com/prefs/apps/
+client id =
+client secret =
+username =
+password =
