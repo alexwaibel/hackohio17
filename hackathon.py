@@ -8,6 +8,7 @@ import watson_developer_cloud
 from watson_developer_cloud import PersonalityInsightsV3
 import requests
 import urllib
+import gui
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
