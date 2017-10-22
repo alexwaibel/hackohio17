@@ -18,9 +18,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui = GeneratedCode.Ui_mainWindow()
         self.ui.setupUi(self)
         self.m_l = movie_list
-        for x in range(1, 26):
+        for x in range(1, len(self.m_l)+1):
             self.label = QtWidgets.QListWidgetItem()
-            self.label.setText(str(x) + " " + self.m_l[x-1]['title'])
+            self.label.setText(str(x) + " " + self.m_l[x-1].title + " " + str(self.m_l[x-1].score))
             self.ui.listWidget.addItem(self.label)
 
 

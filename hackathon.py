@@ -9,6 +9,7 @@ from watson_developer_cloud import PersonalityInsightsV3
 import requests
 import urllib
 import gui
+from movie import movie
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
@@ -123,8 +124,8 @@ def main():
     trait_dictionary = get_traits_dic(userProf)
     consum_dictionary = get_consumption_traits(userProf)
 
-    print(trait_dictionary)
-    print(consum_dictionary)
+    #print(trait_dictionary)
+    #print(consum_dictionary)
 
     # Rank genres with a score of 0 to 1 inclusive
     ope = trait_dictionary["Openness"]
@@ -132,11 +133,11 @@ def main():
     ext = trait_dictionary["Extraversion"]
     agr = trait_dictionary["Agreeableness"]
     neu = trait_dictionary["Emotional range"]
-    print(ope)
-    print(con)
-    print(ext)
-    print(agr)
-    print(neu)
+    #print(ope)
+    #print(con)
+    #print(ext)
+    #print(agr)
+    #print(neu)
 
     action_score = ((1-ope)+ext+consum_dictionary["action"]) / 3
     adventure_score = (con+agr+consum_dictionary["adventure"]) / 3
@@ -161,7 +162,7 @@ def main():
                      ["war", war_score, 10752], ["history", history_score, 36], ["romance", romance_score, 10749], ["music", music_score, 10402],
                      ["mystery", mystery_score, 9648], ["thriller", thriller_score, 53], ["horror", horror_score, 27]],
                     key=lambda x: x[1], reverse=True)
-    print(scores)
+    #print(scores)
 
     movie_db_apikey = "e7552b83b0a1458bf2caadfe42e02de5"
     movie_db_api = "https://api.themoviedb.org"
@@ -171,19 +172,32 @@ def main():
         url = movie_db_api + "/3/discover/movie?api_key="+movie_db_apikey+"&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=true&page="+str(i)+"&with_genres="+str(scores[0][2])+"|"+str(scores[1][2])+"|"+str(scores[2][2])+"|"+str(scores[3][2])+"&with_original_language=en"
         response = requests.get(url)
         json_data = response.json()
-        for j in range(0,19):
-            movies.insert((i-1)*20+j,json_data['results'][j])
+        print(json_data)
+        for j in range(0,20):
+            #print((i-1)*10+j)
+            #movies.insert((i-1)*20+j,movie(json_data['results'][j]['title'], json_data['results'][j]['genre_ids'], scores))
+            recommendation = movie(json_data['results'][j]['title'], json_data['results'][j]['genre_ids'], scores, json_data['results'][j]['popularity'])
+            insert_movie_in_order(recommendation, movies)
 
-    print(movies)
+
     gui.main(movies)
 
-
-
-
-
-
-
-
+def insert_movie_in_order(movie_to_insert, movie_list):
+    score = movie_to_insert.score
+    if len(movie_list) != 0:
+        for i in range(1, len(movie_list) + 1):
+            if score > movie_list[i - 1].score:
+                movie_list.insert(i - 1, movie_to_insert)
+                break
+            #elif score == movie_list[i].score:
+            #    popularity = movie_to_insert.popularity
+            #    if popularity > movie_list[i].popularity:
+            #        movie_list.insert(i, movie_to_insert)
+            #        break
+            elif i == len(movie_list):
+                movie_list.insert(i, movie_to_insert)
+    else:
+        movie_list.insert(0, movie_to_insert)
 
 if __name__ == "__main__":
     main()
