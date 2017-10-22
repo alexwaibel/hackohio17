@@ -144,7 +144,7 @@ def main():
     print(neu)
 
 
-    git action_score = ((1-ope)+ext+consum_dictionary["action"]) / 3
+    action_score = ((1-ope)+ext+consum_dictionary["action"]) / 3
     adventure_score = (con+agr+consum_dictionary["adventure"]) / 3
     animation_score = ((1-con)+(1-ext)+(1-agr)+neu) / 4
     comedy_score = ((1-ope)+ext+agr) / 3
