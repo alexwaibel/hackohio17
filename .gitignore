@@ -1,2 +1,3 @@
 # To avoid committing private information                                      
 config.cfg  
+.idea/*
