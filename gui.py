@@ -13,24 +13,24 @@ class InfoScreen(QtWidgets.QDialog):
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
-
-    def __init__(self):
+    def __init__(self, movie_list):
         super(ApplicationWindow, self).__init__()
         self.ui = GeneratedCode.Ui_mainWindow()
         self.ui.setupUi(self)
+        self.m_l = movie_list
         for x in range(1, 26):
             self.label = QtWidgets.QListWidgetItem()
-            self.label.setText(str(x) + ".")
+            self.label.setText(str(x) + " " + self.m_l[x-1]['title'])
             self.ui.listWidget.addItem(self.label)
 
 
-def main():
+def main(ml):
     app = QtWidgets.QApplication(sys.argv)
     info_screen = InfoScreen()
     info_screen.show()
     if info_screen.exec_():
         sys.exit(-1)
-    main_win = ApplicationWindow()
+    main_win = ApplicationWindow(ml)
     main_win.show()
     sys.exit(app.exec_())
 

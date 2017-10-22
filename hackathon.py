@@ -175,6 +175,7 @@ def main():
             movies.insert((i-1)*20+j,json_data['results'][j])
 
     print(movies)
+    gui.main(movies)
 
 
 
