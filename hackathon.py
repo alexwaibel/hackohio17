@@ -170,7 +170,8 @@ def main():
         url = movie_db_api + "/3/discover/movie?api_key="+movie_db_apikey+"&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=true&page="+str(i)+"&with_genres="+str(scores[0][2])+"|"+str(scores[1][2])+"|"+str(scores[2][2])+"|"+str(scores[3][2])+"&with_original_language=en"
         response = requests.get(url)
         json_data = response.json()
-        movies.append(json_data['results'])
+        for j in range(0,19):
+            movies.insert((i-1)*20+j,json_data['results'][j])
 
     print(movies)
 
