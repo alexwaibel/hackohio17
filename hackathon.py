@@ -6,6 +6,8 @@ import re
 import twitter
 import watson_developer_cloud
 from watson_developer_cloud import PersonalityInsightsV3
+import requests
+import urllib
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
@@ -44,8 +46,6 @@ def get_traits_dic(prof):
     trait_dic = dict()
     for personalities in prof['personality']:
         trait_dic[personalities['name']] = personalities['raw_score']
-        for child in personalities['children']:
-            trait_dic[child['name']] = child['raw_score']
     return trait_dic
 
 
@@ -120,7 +120,65 @@ def main():
                                             consumption_preferences=True,
                                             csv_headers=False)
     trait_dictionary = get_traits_dic(userProf)
-    consum_dict = get_consumption_traits(userProf)
+    consum_dictionary = get_consumption_traits(userProf)
+
+    print(trait_dictionary)
+    print(consum_dictionary)
+
+    # Rank genres with a score of 0 to 1 inclusive
+    ope = trait_dictionary["Openness"]
+    con = trait_dictionary["Conscientiousness"]
+    ext = trait_dictionary["Extraversion"]
+    agr = trait_dictionary["Agreeableness"]
+    neu = trait_dictionary["Emotional range"]
+    print(ope)
+    print(con)
+    print(ext)
+    print(agr)
+    print(neu)
+
+    action_score = ((1-ope)+ext+consum_dictionary["action"]) / 3
+    adventure_score = (con+agr+consum_dictionary["adventure"]) / 3
+    animation_score = ((1-con)+(1-ext)+(1-agr)+neu) / 4
+    comedy_score = ((1-ope)+ext+agr) / 3
+    crime_score = (ope+(1-ext)+(1-agr)) / 3
+    documentary_score = (ope+consum_dictionary["documentary"]) / 2
+    drama_score = (ext+agr+consum_dictionary["drama"]) / 3
+    science_fiction_score = (con+(1-ext)+consum_dictionary["science_fiction"])/3
+    fantasy_score = science_fiction_score
+    war_score = ((1-ope)+(1-neu)+consum_dictionary["war"])/3
+    history_score = ((1-ope)+(1-neu) + consum_dictionary["historical"]) / 3
+    romance_score = ((1-ope)+ext+agr+consum_dictionary["romance"])/4
+    music_score = (neu+consum_dictionary["musical"])/2
+    mystery_score = crime_score
+    thriller_score = (action_score + drama_score) / 2
+    horror_score = ((1-ext) + (1-agr) + neu + consum_dictionary["horror"]) / 4
+
+    scores = sorted([["action", action_score, 28], ["adventure", adventure_score, 12], ["animation", animation_score, 16],
+                     ["comedy", comedy_score, 35], ["crime", crime_score, 80], ["documentary", documentary_score, 99],
+                     ["drama", drama_score, 18], ["science-fiction", science_fiction_score, 878], ["fantasy", fantasy_score, 14],
+                     ["war", war_score, 10752], ["history", history_score, 36], ["romance", romance_score, 10749], ["music", music_score, 10402],
+                     ["mystery", mystery_score, 9648], ["thriller", thriller_score, 53], ["horror", horror_score, 27]],
+                    key=lambda x: x[1], reverse=True)
+    print(scores)
+
+    movie_db_apikey = "e7552b83b0a1458bf2caadfe42e02de5"
+    movie_db_api = "https://api.themoviedb.org"
+    movies = list()
+
+    for i in range(1,11):
+        url = movie_db_api + "/3/discover/movie?api_key="+movie_db_apikey+"&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=true&page="+str(i)+"&with_genres="+str(scores[0][2])+"|"+str(scores[1][2])+"|"+str(scores[2][2])+"|"+str(scores[3][2])+"&with_original_language=en"
+        response = requests.get(url)
+        json_data = response.json()
+        movies.append(json_data['results'])
+
+    print(movies)
+
+
+
+
+
+
 
 
 
