@@ -6,6 +6,9 @@ import re
 import twitter
 import watson_developer_cloud
 from watson_developer_cloud import PersonalityInsightsV3
+import requests
+import urllib
+import Movie
 
 config = configparser.ConfigParser()
 config.read('config.cfg')
@@ -152,13 +155,29 @@ def main():
     thriller_score = (action_score + drama_score) / 2
     horror_score = ((1-ext) + (1-agr) + neu + consum_dictionary["horror"]) / 4
 
-    scores = sorted([("action", action_score), ("adventure", adventure_score), ("animation", animation_score),
-                     ("comedy", comedy_score), ("crime", crime_score), ("documentary", documentary_score),
-                     ("drama", drama_score), ("science-fiction", science_fiction_score), ("fantasy", fantasy_score),
-                     ("war", war_score), ("history", history_score), ("romance", romance_score), ("music", music_score),
-                     ("mystery", mystery_score), ("thriller", thriller_score), ("horror", horror_score)],
+    scores = sorted([["action", action_score, 28], ["adventure", adventure_score, 12], ["animation", animation_score, 16],
+                     ["comedy", comedy_score, 35], ["crime", crime_score, 80], ["documentary", documentary_score, 99],
+                     ["drama", drama_score, 18], ["science-fiction", science_fiction_score, 878], ["fantasy", fantasy_score, 14],
+                     ["war", war_score, 10752], ["history", history_score, 36], ["romance", romance_score, 10749], ["music", music_score, 10402],
+                     ["mystery", mystery_score, 9648], ["thriller", thriller_score, 53], ["horror", horror_score, 27]],
                     key=lambda x: x[1], reverse=True)
     print(scores)
+
+    movie_db_apikey = "e7552b83b0a1458bf2caadfe42e02de5"
+    movie_db_api = "https://api.themoviedb.org"
+    movies = list()
+
+
+    for i in range(1,11):
+        url = movie_db_api + "/3/discover/movie?api_key="+movie_db_apikey+"&language=en-US&sort_by=popularity.desc&include_adult=true&include_video=true&page="+str(i)+"&with_genres="+str(scores[0][2])+"|"+str(scores[1][2])+"|"+str(scores[2][2])+"|"+str(scores[3][2])+"&with_original_language=en"
+        response = requests.get(url)
+        json_data = response.json()
+        for i in range(0, 20):
+            mymovie = Movie(json_data['results']['title'], json_data['results']['genre_ids'], scores)
+            movies.append([("title",json_data['results']['title']), ('genre_ids', json_data['results']['genre_ids'])])
+
+    print(movies)
+
 
 
 
