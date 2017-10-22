@@ -24,12 +24,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.ui.listWidget.addItem(self.label)
 
 
-if __name__ == "__main__":
+def main():
     app = QtWidgets.QApplication(sys.argv)
-    infoScreen = InfoScreen()
-    infoScreen.show()
-    if infoScreen.exec_():
+    info_screen = InfoScreen()
+    info_screen.show()
+    if info_screen.exec_():
         sys.exit(-1)
-    main = ApplicationWindow()
-    main.show()
+    main_win = ApplicationWindow()
+    main_win.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()
