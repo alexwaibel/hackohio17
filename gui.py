@@ -18,7 +18,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         super(ApplicationWindow, self).__init__()
         self.ui = GeneratedCode.Ui_mainWindow()
         self.ui.setupUi(self)
-        for x in range(1, 100):
+        for x in range(1, 26):
             self.label = QtWidgets.QListWidgetItem()
             self.label.setText(str(x) + ".")
             self.ui.listWidget.addItem(self.label)
